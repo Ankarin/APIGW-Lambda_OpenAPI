@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  title: Admin and Partners API
+  version: 1.0.0
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+x-amazon-apigateway-request-validator: params-only
+paths:
+  /admins:
+    post:
+      summary: Create a new admin
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-request-validator: all
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: CreateAdminHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin'
+      responses:
+        '201':
+          description: Admin created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+    get:
+      summary: Get all admins
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: ReadAllAdminHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      responses:
+        '200':
+          description: A list of admins
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+  /admins/{id}:
+    get:
+      summary: Get an admin by ID
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: ReadAdminHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+    put:
+      summary: Update an admin by ID
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-request-validator: all
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: UpdateAdminHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Admin'
+      responses:
+        '200':
+          description: Admin updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+    delete:
+      summary: Delete an admin by ID
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: DeleteAdminHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Admin deleted
+  /partners:
+    post:
+      summary: Create a new partner
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-request-validator: all
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: CreatePartnerHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partner'
+      responses:
+        '201':
+          description: Partner created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partner'
+    get:
+      summary: Get all partners
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: ReadAllPartnerHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      responses:
+        '200':
+          description: A list of partners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Partner'
+  /partners/{id}:
+    get:
+      summary: Get a partner by ID
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: ReadPartnerHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single partner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partner'
+    put:
+      summary: Update a partner by ID
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      x-amazon-apigateway-request-validator: all
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: UpdatePartnerHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Partner'
+      responses:
+        '200':
+          description: Partner updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Partner'
+    delete:
+      x-amazon-apigateway-auth:
+        type: AWS_IAM
+      summary: Delete a partner by ID
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: DeletePartnerHandler
+        passthroughBehavior: when_no_match
+        type: aws_proxy
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Partner deleted
+components:
+  schemas:
+    Admin:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      required:
+        - first_name
+        - last_name
+        - email
+    Partner:
+      type: object
+      properties:
+        organization_name:
+          type: string
+        street_address:
+          type: string
+        street_address_line2:
+          type: string
+        city:
+          type: string
+        state_province:
+          type: string
+        postal_zip_code:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        title:
+          type: string
+        email:
+          type: string
+        effective_date:
+          type: string
+          format: date
+      required:
+        - organization_name
+        - street_address
+        - city
+        - state_province
+        - postal_zip_code
+        - first_name
+        - last_name
+        - title
+        - email
+        - effective_date

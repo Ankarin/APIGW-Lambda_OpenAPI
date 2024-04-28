@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import * as cdk from 'aws-cdk-lib';
-import { MiteraCdkStack } from '../lib/mitera-cdk-stack';
+import * as cdk from "aws-cdk-lib";
+import { appCdkStack } from "../lib/app-cdk-stack";
 
 const app = new cdk.App();
-new MiteraCdkStack(app, 'MiteraCdkStack');
+new appCdkStack(app, "appCdkStack");
